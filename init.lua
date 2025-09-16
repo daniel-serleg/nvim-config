@@ -1,3 +1,5 @@
+-- https://www.youtube.com/watch?v=zbpF3te0M3g&t=3896s
+
 require("vim-options")
 
 -- UI config for nvim bottom line
