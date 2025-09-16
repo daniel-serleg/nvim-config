@@ -4,7 +4,7 @@ local function get_jdtls()
     -- Find the JDTLS package in the Mason Regsitry
     local jdtls = mason_registry.get_package("jdtls")
     -- Find the full path to the directory where Mason has downloaded the JDTLS binaries
-    --local jdtls_path = jdtls:get_install_path()
+--    local jdtls_path = jdtls:get_install_path()
     local jdtls_path = "/Users/danielserleg/.local/share/nvim/mason/bin/jdtls"
     -- Obtain the path to the jar which runs the language server
     local launcher = vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar")
