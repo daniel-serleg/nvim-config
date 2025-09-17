@@ -1,6 +1,5 @@
 -- https://www.youtube.com/watch?v=zbpF3te0M3g&t=3896s
 
-require("vim-options")
 
 -- UI config for nvim bottom line
 vim.api.nvim_create_autocmd({ "UIEnter", "ColorScheme" }, {
@@ -30,7 +29,22 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     os.exit(1)
   end
 end
+
 vim.opt.rtp:prepend(lazypath)
+
+-- Declare a few options for lazy
+local opts = {
+	change_detection = {
+		-- Don't notify us every time a change is made to the configuration
+		notify = false,
+	},
+	checker = {
+		-- Automatically check for package updates
+		enabled = true,
+		-- Don't spam us with notification every time there is an update available
+		notify = false,
+	},
+}
 
 -- Make sure to setup `mapleader` and `maplocalleader` before
 -- loading lazy.nvim so that mappings are correct.
@@ -39,7 +53,13 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 
--- Setup lazy.nvim
-require("lazy").setup("plugins")
 
+require("vim-options")
+require("config.keymaps")
 require("config.autocmds")
+
+-- Setup lazy.nvim
+require("lazy").setup("plugins", opts)
+
+    vim.cmd.colorscheme "eldritch"
+
