@@ -60,6 +60,5 @@ require("config.autocmds")
 
 -- Setup lazy.nvim
 require("lazy").setup("plugins", opts)
-
-    vim.cmd.colorscheme "eldritch"
+vim.cmd.colorscheme "eldritch"
 
