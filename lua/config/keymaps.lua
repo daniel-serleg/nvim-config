@@ -23,3 +23,6 @@ vim.keymap.set("n", "<leader>wh", ":split<cr>", { desc = "[W]indow Split [H]oriz
 -- Stay in indent mode
 vim.keymap.set("v", "<", "<gv", { desc = "Indent left in visual mode" })
 vim.keymap.set("v", ">", ">gv", { desc = "Indent right in visual mode" })
+
+vim.keymap.set("n", "<C-S-k>", ":m .-2<CR>==", { desc = "Move a line up" })
+vim.keymap.set("n", "<C-S-j>", ":m .+1<CR>==", { desc = "Move a line down" })
