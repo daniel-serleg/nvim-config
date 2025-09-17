@@ -74,11 +74,6 @@ return {
         capabilities = capabilities,
       })
 
-
-      vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
-      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {})
-      vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, {})
-
       -- Set vim motion for <Space> + c + h to show code documentation about the code the cursor is currently over if available
       vim.keymap.set("n", "<leader>ch", vim.lsp.buf.hover, { desc = "[C]ode [H]over Documentation" })
       -- Set vim motion for <Space> + c + d to go where the code/variable under the cursor was defined
