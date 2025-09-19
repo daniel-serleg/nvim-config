@@ -37,6 +37,19 @@ return {
     config = function()
       require("mason-lspconfig").setup {
         ensure_installed = { "lua_ls", "ts_ls", "jdtls" },
+        -- Setup handlers - prevent mason-lspconfig from automatically handling JDTLS
+        handlers = {
+          -- Default handler for all servers
+          function(server_name)
+            -- Skip JDTLS since we handle it manually via autocmd
+            if server_name == 'jdtls' then
+              return
+            end
+            require("lspconfig")[server_name].setup({
+              capabilities = require("cmp_nvim_lsp").default_capabilities()
+            })
+          end
+        }
       }
     end
   },
@@ -58,21 +71,8 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      local lspconfig = require("lspconfig")
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-      -- lspconfig.lua_ls.setup({})
-      -- lspconfig.ts_ls.setup({})
-
-      -- setup the lua language server
-      lspconfig.lua_ls.setup({
-        capabilities = capabilities,
-      })
-
-      -- setup the typescript language server
-      lspconfig.ts_ls.setup({
-        capabilities = capabilities,
-      })
+      -- LSP servers are now handled by mason-lspconfig handlers above
+      -- This section is for keymaps and other LSP-related configuration
 
       -- Set vim motion for <Space> + c + h to show code documentation about the code the cursor is currently over if available
       vim.keymap.set("n", "<leader>ch", vim.lsp.buf.hover, { desc = "[C]ode [H]over Documentation" })

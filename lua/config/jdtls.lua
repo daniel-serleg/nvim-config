@@ -1,53 +1,97 @@
 local function get_jdtls()
-    -- Get the Mason Registry to gain access to downloaded binaries
-    local mason_registry = require("mason-registry")
-    -- Find the JDTLS package in the Mason Regsitry
-    local jdtls = mason_registry.get_package("jdtls")
-    -- Find the full path to the directory where Mason has downloaded the JDTLS binaries
-    -- local jdtls_path = jdtls:get_install_path()
-    local jdtls_path = "/Users/danielserleg/.local/share/nvim/mason/bin/jdtls"
+    -- Use Mason's standard installation path
+    local mason_packages_path = vim.fn.stdpath("data") .. "/mason/packages"
+    local jdtls_path = mason_packages_path .. "/jdtls"
+    
+    -- Check if JDTLS is installed by checking if the directory exists
+    if vim.fn.isdirectory(jdtls_path) == 0 then
+        vim.notify("JDTLS is not installed at " .. jdtls_path .. ". Please install it with :MasonInstall jdtls", vim.log.levels.ERROR)
+        return nil, nil, nil
+    end
+    
     -- Obtain the path to the jar which runs the language server
     local launcher = vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar")
-     -- Declare white operating system we are using, windows use win, macos use mac
+    
+    -- Declare which operating system we are using, windows use win, macos use mac
     local SYSTEM = "linux"
+    if vim.fn.has("win32") == 1 then
+        SYSTEM = "win"
+    elseif vim.fn.has("unix") == 1 then
+        if vim.fn.has("mac") == 1 then
+            -- Check if it's Apple Silicon or Intel Mac
+            local arch = vim.fn.system("uname -m"):gsub("%s+", "")
+            if arch == "arm64" then
+                SYSTEM = "mac_arm"
+            else
+                SYSTEM = "mac"
+            end
+        else
+            -- Check if it's ARM Linux
+            local arch = vim.fn.system("uname -m"):gsub("%s+", "")
+            if arch == "aarch64" or arch == "arm64" then
+                SYSTEM = "linux_arm"
+            else
+                SYSTEM = "linux"
+            end
+        end
+    end
+    
     -- Obtain the path to configuration files for your specific operating system
     local config = jdtls_path .. "/config_" .. SYSTEM
-    -- Obtain the path to the Lomboc jar
+    -- Obtain the path to the Lombok jar
     local lombok = jdtls_path .. "/lombok.jar"
     return launcher, config, lombok
 end
 
 local function get_bundles()
-    -- Get the Mason Registry to gain access to downloaded binaries
-    local mason_registry = require("mason-registry")
-    -- Find the Java Debug Adapter package in the Mason Registry
-    local java_debug = mason_registry.get_package("java-debug-adapter")
-    -- Obtain the full path to the directory where Mason has downloaded the Java Debug Adapter binaries
-    local java_debug_path = java_debug:get_install_path()
+    local bundles = {}
+    local mason_packages_path = vim.fn.stdpath("data") .. "/mason/packages"
+    
+    -- Check if java-debug-adapter is installed
+    local java_debug_path = mason_packages_path .. "/java-debug-adapter"
+    if vim.fn.isdirectory(java_debug_path) == 1 then
+        -- Add the debug adapter jar to bundles
+        local debug_jar = vim.fn.glob(java_debug_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar", 1)
+        if debug_jar ~= "" then
+            table.insert(bundles, debug_jar)
+        end
+    else
+        vim.notify("java-debug-adapter not installed. Debug functionality may not work.", vim.log.levels.WARN)
+    end
 
-    local bundles = {
-        vim.fn.glob(java_debug_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar", 1)
-    }
+    -- Check if java-test is installed
+    local java_test_path = mason_packages_path .. "/java-test"
+    if vim.fn.isdirectory(java_test_path) == 1 then
+        -- Add all of the Jars for running tests in debug mode to the bundles list
+        local test_jars = vim.split(vim.fn.glob(java_test_path .. "/extension/server/*.jar", 1), "\n")
+        for _, jar in ipairs(test_jars) do
+            if jar ~= "" then
+                table.insert(bundles, jar)
+            end
+        end
+    else
+        vim.notify("java-test not installed. Test functionality may not work.", vim.log.levels.WARN)
+    end
 
-    -- Find the Java Test package in the Mason Registry
-    local java_test = mason_registry.get_package("java-test")
-    -- Obtain the full path to the directory where Mason has downloaded the Java Test binaries
-    local java_test_path = java_test:get_install_path()
-     -- Add all of the Jars for running tests in debug mode to the bundles list
-     vim.list_extend(bundles, vim.split(vim.fn.glob(java_test_path .. "/extension/server/*.jar", 1), "\n"))
-
-     return bundles
+    return bundles
 end
 
 local function get_workspace()
     -- Get the home directory of your operating system
-    local home = os.getenv "HOME"
+    local home = os.getenv("HOME")
+    if not home then
+        home = vim.fn.expand("~")
+    end
     -- Declare a directory where you would like to store project information
     local workspace_path = home .. "/code/workspace/"
     -- Determine the project name
     local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
     -- Create the workspace directory by concatenating the designated workspace path and the project name
     local workspace_dir = workspace_path .. project_name
+    
+    -- Ensure the workspace directory exists
+    vim.fn.mkdir(workspace_dir, "p")
+    
     return workspace_dir
 end
 
@@ -87,6 +131,12 @@ local function setup_jdtls()
 
     -- Get the paths to the jdtls jar, operating specific configuration directory, and lombok jar
     local launcher, os_config, lombok = get_jdtls()
+    
+    -- Check if JDTLS setup was successful
+    if not launcher or launcher == "" then
+        vim.notify("Failed to setup JDTLS. Please check your installation.", vim.log.levels.ERROR)
+        return
+    end
 
     -- Get the path you specified to hold project information
     local workspace_dir = get_workspace()
