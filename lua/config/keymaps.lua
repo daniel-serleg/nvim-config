@@ -26,3 +26,6 @@ vim.keymap.set("v", ">", ">gv", { desc = "Indent right in visual mode" })
 
 vim.keymap.set("n", "<C-S-k>", ":m .-2<CR>==", { desc = "Move a line up" })
 vim.keymap.set("n", "<C-S-j>", ":m .+1<CR>==", { desc = "Move a line down" })
+
+-- Json formatter
+vim.keymap.set("n", "<leader>cjf", ":JqxList<CR>", { desc = "[C]ode [Json] [F]ormatter"})
