@@ -30,14 +30,61 @@ vim.keymap.set("n", "<C-S-j>", ":m .+1<CR>==", { desc = "Move a line down" })
 -- Json formatter
 vim.keymap.set("n", "<leader>cjf", ":JqxList<CR>", { desc = "[C]ode [Json] [F]ormatter"})
 
+-- Barbar
+local map = vim.api.nvim_set_keymap
+local opts = { noremap = true, silent = true }
 
--- Tabby
-vim.api.nvim_set_keymap("n", "<leader>ta", ":$tabnew<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>tc", ":tabclose<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>to", ":tabonly<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>tn", ":tabn<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>tp", ":tabp<CR>", { noremap = true })
--- move current tab to previous position
-vim.api.nvim_set_keymap("n", "<leader>tmp", ":-tabmove<CR>", { noremap = true })
--- move current tab to next position
-vim.api.nvim_set_keymap("n", "<leader>tmn", ":+tabmove<CR>", { noremap = true })
+-- Move to previous/next
+map('n', '<A-,>', '<Cmd>BufferPrevious<CR>', opts)
+map('n', '<A-.>', '<Cmd>BufferNext<CR>', opts)
+
+-- Re-order to previous/next
+map('n', '<A-<>', '<Cmd>BufferMovePrevious<CR>', opts)
+map('n', '<A->>', '<Cmd>BufferMoveNext<CR>', opts)
+
+-- Goto buffer in position...
+map('n', '<A-1>', '<Cmd>BufferGoto 1<CR>', opts)
+map('n', '<A-2>', '<Cmd>BufferGoto 2<CR>', opts)
+map('n', '<A-3>', '<Cmd>BufferGoto 3<CR>', opts)
+map('n', '<A-4>', '<Cmd>BufferGoto 4<CR>', opts)
+map('n', '<A-5>', '<Cmd>BufferGoto 5<CR>', opts)
+map('n', '<A-6>', '<Cmd>BufferGoto 6<CR>', opts)
+map('n', '<A-7>', '<Cmd>BufferGoto 7<CR>', opts)
+map('n', '<A-8>', '<Cmd>BufferGoto 8<CR>', opts)
+map('n', '<A-9>', '<Cmd>BufferGoto 9<CR>', opts)
+map('n', '<A-0>', '<Cmd>BufferLast<CR>', opts)
+
+-- Pin/unpin buffer
+map('n', '<A-p>', '<Cmd>BufferPin<CR>', opts)
+
+-- Goto pinned/unpinned buffer
+--                 :BufferGotoPinned
+--                 :BufferGotoUnpinned
+
+-- Close buffer
+map('n', '<A-c>', '<Cmd>BufferClose<CR>', opts)
+
+-- Wipeout buffer
+--                 :BufferWipeout
+
+-- Close commands
+--                 :BufferCloseAllButCurrent
+--                 :BufferCloseAllButPinned
+--                 :BufferCloseAllButCurrentOrPinned
+--                 :BufferCloseBuffersLeft
+--                 :BufferCloseBuffersRight
+
+-- Magic buffer-picking mode
+map('n', '<C-p>',   '<Cmd>BufferPick<CR>', opts)
+map('n', '<C-s-p>', '<Cmd>BufferPickDelete<CR>', opts)
+
+-- Sort automatically by...
+map('n', '<leader>bb', '<Cmd>BufferOrderByBufferNumber<CR>', opts)
+map('n', '<leader>bn', '<Cmd>BufferOrderByName<CR>', opts)
+map('n', '<leader>bd', '<Cmd>BufferOrderByDirectory<CR>', opts)
+map('n', '<leader>bl', '<Cmd>BufferOrderByLanguage<CR>', opts)
+map('n', '<leader>bw', '<Cmd>BufferOrderByWindowNumber<CR>', opts)
+
+-- Other:
+-- :BarbarEnable - enables barbar (enabled by default)
+-- :BarbarDisable - very bad command, should never be used
