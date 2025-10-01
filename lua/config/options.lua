@@ -47,3 +47,7 @@ vim.opt.cursorline = true -- highlight current line
 vim.opt.hlsearch = true -- highlight all matches in search
 vim.opt.ignorecase = true -- ignore case in search
 vim.opt.smartcase = true -- match case if explicitly stated
+
+-- Tabs
+vim.o.showtabline = 2
+vim.opt.sessionoptions = 'curdir,folds,globals,help,tabpages,terminal,winsize'
