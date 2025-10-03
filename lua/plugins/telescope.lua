@@ -29,24 +29,33 @@ return {
         local actions = require("telescope.actions")
 
         require("telescope").setup {
+            defaults = {
+                -- Choose one of these path_display options:
+                path_display = { "smart" }, -- Smart path shortening (recommended)
+                -- path_display = { "filename_first" }, -- Shows filename first, then path
+                -- path_display = { "filename" }, -- Shows only filename
+                -- path_display = { "shorten" }, -- Shortens directory names
+                -- path_display = { "truncate" }, -- Truncates from the beginning
+                
+                -- set keymappings to navigate through items in the telescope io
+                mappings = {
+                    i = {
+                         -- use <cltr> + n to go to the next option
+                        ["<C-n>"] = actions.cycle_history_next,
+                        -- use <cltr> + p to go to the previous option
+                        ["<C-p>"] = actions.cycle_history_prev,
+                        -- use <cltr> + j to go to the next preview
+                        ["<C-j>"] = actions.move_selection_next,
+                        -- use <cltr> + k to go to the previous preview
+                        ["<C-k>"] = actions.move_selection_previous,
+                    }
+                },
+            },
             extensions = {
                 ["ui-select"] = {
                     require("telescope.themes").get_dropdown {
                         -- even more opts
                     }
-                }
-            },
-            -- set keymappings to navigate through items in the telescope io
-            mappings = {
-                i = {
-                     -- use <cltr> + n to go to the next option
-                    ["<C-n>"] = actions.cycle_history_next,
-                    -- use <cltr> + p to go to the previous option
-                    ["<C-p>"] = actions.cycle_history_prev,
-                    -- use <cltr> + j to go to the next preview
-                    ["<C-j>"] = actions.move_selection_next,
-                    -- use <cltr> + k to go to the previous preview
-                    ["<C-k>"] = actions.move_selection_previous,
                 }
             },
             require("telescope").load_extension("ui-select")
