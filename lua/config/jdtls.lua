@@ -145,7 +145,29 @@ local function setup_jdtls()
     local bundles = get_bundles()
 
     -- Determine the root directory of the project by looking for these specific markers
-    local root_dir = jdtls.setup.find_root({ '.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle' });
+    -- Enhanced root detection for Maven multi-module projects
+    local root_dir = jdtls.setup.find_root({ 
+        '.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle',
+        '.project', '.settings', 'src/main/java'
+    });
+    
+    -- If we're in a submodule, try to find the parent project root
+    if root_dir and vim.fn.filereadable(root_dir .. '/pom.xml') == 1 then
+        local parent_dir = vim.fn.fnamemodify(root_dir, ':h')
+        while parent_dir ~= '/' and parent_dir ~= root_dir do
+            if vim.fn.filereadable(parent_dir .. '/pom.xml') == 1 then
+                -- Check if this is a parent pom with modules
+                local parent_pom = vim.fn.readfile(parent_dir .. '/pom.xml')
+                for _, line in ipairs(parent_pom) do
+                    if line:match('<modules>') then
+                        root_dir = parent_dir
+                        break
+                    end
+                end
+            end
+            parent_dir = vim.fn.fnamemodify(parent_dir, ':h')
+        end
+    end
     
     -- Tell our JDTLS language features it is capable of
     local capabilities = {
@@ -232,6 +254,9 @@ local function setup_jdtls()
                     "java.util.Objects.requireNonNull",
                     "java.util.Objects.requireNonNullElse",
                     "org.mockito.Mockito.*",
+                    "org.springframework.test.web.servlet.MockMvcRequestBuilders.*",
+                    "org.springframework.test.web.servlet.result.MockMvcResultMatchers.*",
+                    "org.springframework.test.web.servlet.result.MockMvcResultHandlers.*",
                 },
                 -- Try not to suggest imports from these packages in the code action window
                 filteredTypes = {
@@ -246,8 +271,10 @@ local function setup_jdtls()
                     "java",
                     "jakarta",
                     "javax",
-                    "com",
+                    "org.springframework",
                     "org",
+                    "com",
+                    ""
                 }
             },
             sources = {
@@ -283,6 +310,46 @@ local function setup_jdtls()
                 parameterNames = {
                     enabled = "all"
                 }
+            },
+            -- Enhanced settings for Spring and annotation processing
+            autobuild = {
+                enabled = true
+            },
+            -- Enable annotation processing for Spring annotations
+            compile = {
+                nullAnalysis = {
+                    mode = "automatic"
+                }
+            },
+            -- Better Spring Boot support
+            project = {
+                referencedLibraries = {
+                    "lib/**/*.jar",
+                    "**/target/dependency/*.jar"
+                },
+                sourcePaths = {
+                    "src/main/java",
+                    "src/test/java",
+                    "target/generated-sources"
+                }
+            },
+            -- Improved import handling for Spring
+            imports = {
+                gradle = {
+                    enabled = true
+                },
+                maven = {
+                    enabled = true
+                },
+                includeDecompiledSources = true
+            },
+            -- Enhanced annotation processing
+            implementationsCodeLens = {
+                enabled = true
+            },
+            -- Better support for Spring Boot configuration
+            references = {
+                includeDecompiledSources = true
             }
         }
     }

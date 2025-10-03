@@ -71,6 +71,34 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
+      -- Configure LSP diagnostics for inline display
+      vim.diagnostic.config({
+        virtual_text = {
+          enabled = true,
+          source = "if_many",
+          prefix = "●",
+        },
+        signs = true,
+        underline = true,
+        update_in_insert = false,
+        severity_sort = true,
+        float = {
+          focusable = false,
+          style = "minimal",
+          border = "rounded",
+          source = "always",
+          header = "",
+          prefix = "",
+        },
+      })
+
+      -- Customize diagnostic signs
+      local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+      for type, icon in pairs(signs) do
+        local hl = "DiagnosticSign" .. type
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+      end
+
       -- LSP servers are now handled by mason-lspconfig handlers above
       -- This section is for keymaps and other LSP-related configuration
 
@@ -90,6 +118,12 @@ return {
       vim.keymap.set("n", "<leader>cR", vim.lsp.buf.rename, { desc = "[C]ode [R]ename" })
       -- Set a vim motion for <Space> + c + <Shift>D to go to where the code/object was declared in the project (class file)
       vim.keymap.set("n", "<leader>cD", vim.lsp.buf.declaration, { desc = "[C]ode Goto [D]eclaration" })
+
+      -- Additional keymaps for diagnostics
+      vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
+      vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+      vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
+      vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
     end
   }
 }
