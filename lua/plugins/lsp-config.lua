@@ -108,6 +108,9 @@ return {
       vim.keymap.set("n", "<leader>cd", vim.lsp.buf.definition, { desc = "[C]ode Goto [D]efinition" })
       -- Set vim motion for <Space> + c + a for display code action suggestions for code diagnostics in both normal and visual mode
       vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "[C]ode [A]ctions" })
+      
+      -- Set vim motion for <Space> + c + a + p for code action preview with actual diff preview
+      vim.keymap.set({ "n", "v" }, "<leader>cap", require("actions-preview").code_actions, { desc = "[C]ode [A]ction [P]review" })
       -- Set vim motion for <Space> + c + r to display references to the code under the cursor
       vim.keymap.set("n", "<leader>cr", require("telescope.builtin").lsp_references,
         { desc = "[C]ode Goto [R]eferences" })
