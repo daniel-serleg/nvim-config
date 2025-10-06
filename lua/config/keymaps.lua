@@ -35,34 +35,34 @@ local map = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
 -- Move to previous/next
-map('n', '<C-S-,>', '<Cmd>BufferPrevious<CR>', opts)
-map('n', '<C-S-.>', '<Cmd>BufferNext<CR>', opts)
+vim.keymap.set('n', '<leader>tl', '<Cmd>BufferPrevious<CR>', { desc = "[T]ab Go [Last] <--"})
+vim.keymap.set('n', '<leader>th', '<Cmd>BufferNext<CR>', { desc = "[T]ab Go A[h]ead -->" })
 
 -- Re-order to previous/next
-map('n', '<C-S-<>', '<Cmd>BufferMovePrevious<CR>', opts)
-map('n', '<C-S->>', '<Cmd>BufferMoveNext<CR>', opts)
+vim.keymap.set('n', '<leader>tH', '<Cmd>BufferMovePrevious<CR>')
+vim.keymap.set('n', '<leader>tL', '<Cmd>BufferMoveNext<CR>')
 
 -- Goto buffer in position...
-map('n', '<C-S-1>', '<Cmd>BufferGoto 1<CR>', opts)
-map('n', '<C-S-2>', '<Cmd>BufferGoto 2<CR>', opts)
-map('n', '<C-S-3>', '<Cmd>BufferGoto 3<CR>', opts)
-map('n', '<C-S-4>', '<Cmd>BufferGoto 4<CR>', opts)
-map('n', '<C-S-5>', '<Cmd>BufferGoto 5<CR>', opts)
-map('n', '<C-S-6>', '<Cmd>BufferGoto 6<CR>', opts)
-map('n', '<C-S-7>', '<Cmd>BufferGoto 7<CR>', opts)
-map('n', '<C-S-8>', '<Cmd>BufferGoto 8<CR>', opts)
-map('n', '<C-S-9>', '<Cmd>BufferGoto 9<CR>', opts)
-map('n', '<C-S-0>', '<Cmd>BufferLast<CR>', opts)
+vim.keymap.set('n', '<leader>t1', '<Cmd>BufferGoto 1<CR>')
+vim.keymap.set('n', '<leader>t2', '<Cmd>BufferGoto 2<CR>')
+vim.keymap.set('n', '<leader>t3', '<Cmd>BufferGoto 3<CR>')
+vim.keymap.set('n', '<leader>t4', '<Cmd>BufferGoto 4<CR>')
+vim.keymap.set('n', '<leader>t5', '<Cmd>BufferGoto 5<CR>')
+vim.keymap.set('n', '<leader>t6', '<Cmd>BufferGoto 6<CR>')
+vim.keymap.set('n', '<leader>t7', '<Cmd>BufferGoto 7<CR>')
+vim.keymap.set('n', '<leader>t8', '<Cmd>BufferGoto 8<CR>')
+vim.keymap.set('n', '<leader>t9', '<Cmd>BufferGoto 9<CR>')
+vim.keymap.set('n', '<leader>t0', '<Cmd>BufferLast<CR>')
 
 -- Pin/unpin buffer
-map('n', '<C-S-p>', '<Cmd>BufferPin<CR>', opts)
+vim.keymap.set('n', '<leader>tP', '<Cmd>BufferPin<CR>', { desc = "[T]ab [P]in" })
 
 -- Goto pinned/unpinned buffer
 --                 :BufferGotoPinned
 --                 :BufferGotoUnpinned
 
 -- Close buffer
-map('n', '<C-S-c>', '<Cmd>BufferClose<CR>', opts)
+vim.keymap.set('n', '<leader>tc', '<Cmd>BufferClose<CR>', { desc = "[T]ab [C]lose" })
 
 -- Wipeout buffer
 --                 :BufferWipeout
@@ -75,16 +75,13 @@ map('n', '<C-S-c>', '<Cmd>BufferClose<CR>', opts)
 --                 :BufferCloseBuffersRight
 
 -- Magic buffer-picking mode
-map('n', '<C-p>',   '<Cmd>BufferPick<CR>', opts)
-map('n', '<C-s-p>', '<Cmd>BufferPickDelete<CR>', opts)
+-- map('n', '<C-p>',   '<Cmd>BufferPick<CR>', opts)
+-- map('n', '<C-s-p>', '<Cmd>BufferPickDelete<CR>', opts)
 
 -- Sort automatically by...
-map('n', '<leader>bb', '<Cmd>BufferOrderByBufferNumber<CR>', opts)
-map('n', '<leader>bn', '<Cmd>BufferOrderByName<CR>', opts)
-map('n', '<leader>bd', '<Cmd>BufferOrderByDirectory<CR>', opts)
-map('n', '<leader>bl', '<Cmd>BufferOrderByLanguage<CR>', opts)
-map('n', '<leader>bw', '<Cmd>BufferOrderByWindowNumber<CR>', opts)
+vim.keymap.set('n', '<leader>bb', '<Cmd>BufferOrderByBufferNumber<CR>')
+vim.keymap.set('n', '<leader>bn', '<Cmd>BufferOrderByName<CR>')
+vim.keymap.set('n', '<leader>bd', '<Cmd>BufferOrderByDirectory<CR>')
+vim.keymap.set('n', '<leader>bl', '<Cmd>BufferOrderByLanguage<CR>')
+vim.keymap.set('n', '<leader>bw', '<Cmd>BufferOrderByWindowNumber<CR>')
 
--- Other:
--- :BarbarEnable - enables barbar (enabled by default)
--- :BarbarDisable - very bad command, should never be used
