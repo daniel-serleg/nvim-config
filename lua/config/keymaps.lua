@@ -31,28 +31,25 @@ vim.keymap.set("n", "<C-S-j>", ":m .+1<CR>==", { desc = "Move a line down" })
 vim.keymap.set("n", "<leader>cjf", ":JqxList<CR>", { desc = "[C]ode [Json] [F]ormatter"})
 
 -- Barbar
-local map = vim.api.nvim_set_keymap
-local opts = { noremap = true, silent = true }
-
 -- Move to previous/next
 vim.keymap.set('n', '<leader>tl', '<Cmd>BufferPrevious<CR>', { desc = "[T]ab Go [Last] <--"})
 vim.keymap.set('n', '<leader>th', '<Cmd>BufferNext<CR>', { desc = "[T]ab Go A[h]ead -->" })
 
 -- Re-order to previous/next
-vim.keymap.set('n', '<leader>tH', '<Cmd>BufferMovePrevious<CR>')
-vim.keymap.set('n', '<leader>tL', '<Cmd>BufferMoveNext<CR>')
+vim.keymap.set('n', '<leader>tH', '<Cmd>BufferMovePrevious<CR>', { desc = "[T]ab BufferMovePrevious<" })
+vim.keymap.set('n', '<leader>tL', '<Cmd>BufferMoveNext<CR>', { desc = "[T]ab BufferMoveNext" })
 
 -- Goto buffer in position...
-vim.keymap.set('n', '<leader>t1', '<Cmd>BufferGoto 1<CR>')
-vim.keymap.set('n', '<leader>t2', '<Cmd>BufferGoto 2<CR>')
-vim.keymap.set('n', '<leader>t3', '<Cmd>BufferGoto 3<CR>')
-vim.keymap.set('n', '<leader>t4', '<Cmd>BufferGoto 4<CR>')
-vim.keymap.set('n', '<leader>t5', '<Cmd>BufferGoto 5<CR>')
-vim.keymap.set('n', '<leader>t6', '<Cmd>BufferGoto 6<CR>')
-vim.keymap.set('n', '<leader>t7', '<Cmd>BufferGoto 7<CR>')
-vim.keymap.set('n', '<leader>t8', '<Cmd>BufferGoto 8<CR>')
-vim.keymap.set('n', '<leader>t9', '<Cmd>BufferGoto 9<CR>')
-vim.keymap.set('n', '<leader>t0', '<Cmd>BufferLast<CR>')
+vim.keymap.set('n', '<leader>t1', '<Cmd>BufferGoto 1<CR>', { desc = "[T]ab 1" })
+vim.keymap.set('n', '<leader>t2', '<Cmd>BufferGoto 2<CR>', { desc = "[T]ab 2" })
+vim.keymap.set('n', '<leader>t3', '<Cmd>BufferGoto 3<CR>', { desc = "[T]ab 3" })
+vim.keymap.set('n', '<leader>t4', '<Cmd>BufferGoto 4<CR>', { desc = "[T]ab 4" })
+vim.keymap.set('n', '<leader>t5', '<Cmd>BufferGoto 5<CR>', { desc = "[T]ab 5" })
+vim.keymap.set('n', '<leader>t6', '<Cmd>BufferGoto 6<CR>', { desc = "[T]ab 6" })
+vim.keymap.set('n', '<leader>t7', '<Cmd>BufferGoto 7<CR>', { desc = "[T]ab 7" })
+vim.keymap.set('n', '<leader>t8', '<Cmd>BufferGoto 8<CR>', { desc = "[T]ab 8" })
+vim.keymap.set('n', '<leader>t9', '<Cmd>BufferGoto 9<CR>', { desc = "[T]ab 9" })
+vim.keymap.set('n', '<leader>t0', '<Cmd>BufferLast<CR>', { desc = "[T]ab Last" })
 
 -- Pin/unpin buffer
 vim.keymap.set('n', '<leader>tP', '<Cmd>BufferPin<CR>', { desc = "[T]ab [P]in" })
@@ -79,9 +76,9 @@ vim.keymap.set('n', '<leader>tc', '<Cmd>BufferClose<CR>', { desc = "[T]ab [C]los
 -- map('n', '<C-s-p>', '<Cmd>BufferPickDelete<CR>', opts)
 
 -- Sort automatically by...
-vim.keymap.set('n', '<leader>bb', '<Cmd>BufferOrderByBufferNumber<CR>')
-vim.keymap.set('n', '<leader>bn', '<Cmd>BufferOrderByName<CR>')
-vim.keymap.set('n', '<leader>bd', '<Cmd>BufferOrderByDirectory<CR>')
-vim.keymap.set('n', '<leader>bl', '<Cmd>BufferOrderByLanguage<CR>')
-vim.keymap.set('n', '<leader>bw', '<Cmd>BufferOrderByWindowNumber<CR>')
+vim.keymap.set('n', '<leader>tbb', '<Cmd>BufferOrderByBufferNumber<CR>', { desc = "[T]ab order by buffer number"})
+vim.keymap.set('n', '<leader>tbn', '<Cmd>BufferOrderByName<CR>', { desc = "[T]ab order by name"})
+vim.keymap.set('n', '<leader>tbd', '<Cmd>BufferOrderByDirectory<CR>', { desc = "[T]ab order by directory"})
+vim.keymap.set('n', '<leader>tbl', '<Cmd>BufferOrderByLanguage<CR>', { desc = "[T]ab order by language"})
+vim.keymap.set('n', '<leader>tbw', '<Cmd>BufferOrderByWindowNumber<CR>', { desc = "[T]ab order by window number"})
 
