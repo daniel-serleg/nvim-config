@@ -21,7 +21,7 @@ return {
             -- Set a vim motion to <Space> + g + c to commit the current chages
             vim.keymap.set("n", "<leader>gc", ":Git commit", {desc = "[G]it [C]ommit"})
             -- Set a vim motion to <Space> + g + p to push the commited changes to the remote repository
-            vim.keymap.set("n", "<leader>gp", "Git push", {desc = "[G]it [P]ush"})
+            vim.keymap.set("n", "<leader>gp", ":Git push<cr>", {desc = "[G]it [P]ush"})
             -- Set a vim motion to <Space> + g + l to pull the current branch
             vim.keymap.set("n", "<leader>gl", ":Git pull<cr>", {desc = "[G]it Pu[l]l"})
         end
