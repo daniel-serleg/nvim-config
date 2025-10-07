@@ -55,6 +55,7 @@ local opts = {
 require("vim-options")
 require("config.keymaps")
 require("config.autocmds")
+require("config.jdtls-utils")
 
 -- Setup lazy.nvim
 require("lazy").setup("plugins", opts)

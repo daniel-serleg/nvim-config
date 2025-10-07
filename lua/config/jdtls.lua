@@ -172,11 +172,17 @@ local function setup_jdtls()
     -- Tell our JDTLS language features it is capable of
     local capabilities = {
         workspace = {
-            configuration = true
+            configuration = true,
+            didChangeWatchedFiles = {
+                dynamicRegistration = true
+            }
         },
         textDocument = {
             completion = {
-                snippetSupport = false
+                snippetSupport = false,
+                completionItem = {
+                    documentationFormat = { "markdown", "plaintext" }
+                }
             }
         }
     }
@@ -208,7 +214,7 @@ local function setup_jdtls()
         '-configuration',
         os_config,
         '-data',
-        workspace_dir
+        workspace_dir,
     }
 
      -- Configure settings in the JDTLS server
@@ -229,7 +235,8 @@ local function setup_jdtls()
             },
             -- Enable downloading archives from maven automatically
             maven = {
-                downloadSources = true
+                downloadSources = true,
+                updateSnapshots = true
             },
             -- Enable method signature help
             signatureHelp = {
@@ -245,15 +252,22 @@ local function setup_jdtls()
             },
             -- Customize completion options
             completion = {
+                enabled = true,
+                guessMethodArguments = true,
+                maxResults = 50,
                 -- When using an unimported static method, how should the LSP rank possible places to import the static method from
                 favoriteStaticMembers = {
                     "org.hamcrest.MatcherAssert.assertThat",
                     "org.hamcrest.Matchers.*",
                     "org.hamcrest.CoreMatchers.*",
                     "org.junit.jupiter.api.Assertions.*",
+                    "org.junit.Assert.*",
                     "java.util.Objects.requireNonNull",
                     "java.util.Objects.requireNonNullElse",
                     "org.mockito.Mockito.*",
+                    "org.mockito.ArgumentMatchers.*",
+                    "org.mockito.BDDMockito.*",
+                    "org.assertj.core.api.Assertions.*",
                     "org.springframework.test.web.servlet.MockMvcRequestBuilders.*",
                     "org.springframework.test.web.servlet.result.MockMvcResultMatchers.*",
                     "org.springframework.test.web.servlet.result.MockMvcResultHandlers.*",
@@ -330,7 +344,16 @@ local function setup_jdtls()
                 sourcePaths = {
                     "src/main/java",
                     "src/test/java",
-                    "target/generated-sources"
+                    "target/generated-sources",
+                    "target/generated-test-sources"
+                }
+            },
+            -- Enable test scope dependencies
+            test = {
+                vmArgs = {},
+                sourcePaths = {
+                    "src/test/java",
+                    "src/test/resources"
                 }
             },
             -- Improved import handling for Spring
@@ -342,6 +365,14 @@ local function setup_jdtls()
                     enabled = true
                 },
                 includeDecompiledSources = true
+            },
+            -- Configure runtime for test scope
+            runtimes = {},
+            -- Ensure all scopes are included
+            dependency = {
+                autoRefresh = true,
+                includeProvided = true,
+                includeTest = true
             },
             -- Enhanced annotation processing
             implementationsCodeLens = {
