@@ -174,7 +174,9 @@ local function setup_jdtls()
         workspace = {
             configuration = true,
             didChangeWatchedFiles = {
-                dynamicRegistration = true
+                dynamicRegistration = true,
+                -- Reduce file watcher scope
+                relativePatternSupport = true
             }
         },
         textDocument = {
@@ -204,7 +206,9 @@ local function setup_jdtls()
         '-Declipse.product=org.eclipse.jdt.ls.core.product',
         '-Dlog.protocol=true',
         '-Dlog.level=ALL',
-        '-Xmx1g',
+        '-Xmx4g',  -- Increased from 1g to 4g for large projects
+        '-XX:+UseG1GC',  -- Better GC for large heaps
+        '-XX:+UseStringDeduplication',  -- Reduce memory for duplicate strings
         '--add-modules=ALL-SYSTEM',
         '--add-opens', 'java.base/java.util=ALL-UNNAMED',
         '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
@@ -254,7 +258,7 @@ local function setup_jdtls()
             completion = {
                 enabled = true,
                 guessMethodArguments = true,
-                maxResults = 50,
+                maxResults = 20,  -- Reduced from 50 to 20 for faster completions
                 -- When using an unimported static method, how should the LSP rank possible places to import the static method from
                 favoriteStaticMembers = {
                     "org.hamcrest.MatcherAssert.assertThat",

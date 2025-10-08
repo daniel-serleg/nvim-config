@@ -110,7 +110,7 @@ return {
       vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "[C]ode [A]ctions" })
       
       -- Set vim motion for <Space> + c + a + p for code action preview with actual diff preview
-      vim.keymap.set({ "n", "v" }, "<leader>cap", require("actions-preview").code_actions, { desc = "[C]ode [A]ction [P]review" })
+      vim.keymap.set({ "n", "v" }, "<leader>cA", require("actions-preview").code_actions, { desc = "[C]ode [A]ction [P]review" })
       -- Set vim motion for <Space> + c + r to display references to the code under the cursor
       vim.keymap.set("n", "<leader>cr", require("telescope.builtin").lsp_references,
         { desc = "[C]ode Goto [R]eferences" })
