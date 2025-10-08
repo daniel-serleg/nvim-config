@@ -82,3 +82,5 @@ vim.keymap.set('n', '<leader>tbd', '<Cmd>BufferOrderByDirectory<CR>', { desc = "
 vim.keymap.set('n', '<leader>tbl', '<Cmd>BufferOrderByLanguage<CR>', { desc = "[T]ab order by language"})
 vim.keymap.set('n', '<leader>tbw', '<Cmd>BufferOrderByWindowNumber<CR>', { desc = "[T]ab order by window number"})
 
+-- Shell command execution
+vim.keymap.set('n', '<leader>se', ":execute '!'.getline('.')<CR>", { desc = "[S]hell command [E]xecute"})

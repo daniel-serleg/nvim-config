@@ -28,6 +28,8 @@ return {
             { "<leader>w_", hidden = true },
             { "<leader>t", group = "[T]ab", icon = "" },
             { "<leader>t_", hidden = true },
+            { "<leader>s", group = "[S]hell", icon = "" },
+            { "<leader>s_", hidden = true },
         })
     end
 }
